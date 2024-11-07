@@ -6,11 +6,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.w3c.dom.Text;
 
 /**
@@ -29,21 +25,38 @@ public class MyUI extends UI {
     }
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        final HorizontalLayout salarioBruto = new HorizontalLayout();
+        final VerticalLayout salarioNeto = new VerticalLayout();
         final VerticalLayout layout = new VerticalLayout();
+        final VerticalLayout salarioBrutoContenedor = new VerticalLayout();
+        final VerticalLayout salarioNetoContenedor = new VerticalLayout();
+
+
 
         TextField tipo = creaLabel("Tipo de empleado");
         TextField ventaMes = creaLabel("Venta del mes:");
         TextField horasExtra = creaLabel("Horas extra: ");
 
+        salarioBruto.addComponents(tipo, ventaMes, horasExtra);
 
 
-        Button button = new Button("Click Me");
-        button.addClickListener(e -> {
+        Button botonSalarioBruto = new Button("Calcular Salario Bruto");
+        botonSalarioBruto.addClickListener(e -> {
+
+        });
+        Button botonSalarioNeto = new Button("Calcular Salario Bruto");
+        botonSalarioNeto.addClickListener(e -> {
 
         });
 
-        layout.addComponents(tipo, ventaMes, horasExtra, button);
-        
+        salarioBrutoContenedor.addComponents(salarioBruto, botonSalarioBruto);
+        salarioNetoContenedor.addComponents(salarioNeto, botonSalarioNeto);
+
+        TabSheet tabs = new TabSheet();
+        tabs.addTab(salarioBrutoContenedor).setCaption("Calcular Salario Bruto");
+        tabs.addTab(salarioNetoContenedor).setCaption("Calcular Salario Neto");
+
+        layout.addComponents(tabs);
         setContent(layout);
     }
 
