@@ -11,6 +11,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import org.w3c.dom.Text;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -21,21 +22,27 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Theme("mytheme")
 public class MyUI extends UI {
-
+    private TextField creaLabel(String texto){
+        TextField etiqueta = new TextField(texto);
+        etiqueta.setCaption(texto);
+        return etiqueta;
+    }
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
-        
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
+
+        TextField tipo = creaLabel("Tipo de empleado");
+        TextField ventaMes = creaLabel("Venta del mes:");
+        TextField horasExtra = creaLabel("Horas extra: ");
+
+
 
         Button button = new Button("Click Me");
         button.addClickListener(e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
-                    + ", it works!"));
+
         });
-        
-        layout.addComponents(name, button);
+
+        layout.addComponents(tipo, ventaMes, horasExtra, button);
         
         setContent(layout);
     }
