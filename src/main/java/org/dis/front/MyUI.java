@@ -7,6 +7,8 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
+import org.dis.back.BRException;
+import org.dis.back.EmpleadoBR;
 import org.w3c.dom.Text;
 
 /**
@@ -36,17 +38,40 @@ public class MyUI extends UI {
         TextField tipo = creaLabel("Tipo de empleado");
         TextField ventaMes = creaLabel("Venta del mes:");
         TextField horasExtra = creaLabel("Horas extra: ");
+        TextField inputSalarioBruto = creaLabel("Salario Bruto: ");
 
         salarioBruto.addComponents(tipo, ventaMes, horasExtra);
+        salarioNeto.addComponents(inputSalarioBruto);
 
 
         Button botonSalarioBruto = new Button("Calcular Salario Bruto");
         botonSalarioBruto.addClickListener(e -> {
+            String tipoEmpleadoIn = tipo.getValue();
+            double ventaMesIn = Double.parseDouble( ventaMes.getValue());
+            double horasExtraIn = Double.parseDouble( horasExtra.getValue());
 
+            EmpleadoBR empleado = new EmpleadoBR();
+            try {
+                double resultado = empleado.calculaSalarioBruto(tipoEmpleadoIn, ventaMesIn, horasExtraIn);
+                Label labelSalarioBruto = new Label("Salario Bruto: " + resultado + "€");
+            } catch (BRException ex) {
+                Label labelSalarioBruto = new Label(ex.getMessage());
+                salarioBrutoContenedor.addComponent(labelSalarioBruto);
+            }
         });
-        Button botonSalarioNeto = new Button("Calcular Salario Bruto");
+        Button botonSalarioNeto = new Button("Calcular Salario Neto");
         botonSalarioNeto.addClickListener(e -> {
+            double SalarioBrutoIn = Double.parseDouble( inputSalarioBruto.getValue());
 
+            EmpleadoBR empleado = new EmpleadoBR();
+            try {
+                double resultado = empleado.calculaSalarioNeto(SalarioBrutoIn);
+                Label labelSalarioNeto = new Label("Salario neto: " + resultado + "€");
+                salarioNetoContenedor.addComponent(labelSalarioNeto);
+            } catch (BRException ex) {
+                Label labelSalarioNeto = new Label(ex.getMessage());
+                salarioNetoContenedor.addComponent(labelSalarioNeto);
+            }
         });
 
         salarioBrutoContenedor.addComponents(salarioBruto, botonSalarioBruto);
